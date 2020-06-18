@@ -4,7 +4,7 @@ import '../styles/components/About.css';
 
 const About = () => (
   <div>
-    This is the About page
+    About the NextAPI
   </div>
 )
 
