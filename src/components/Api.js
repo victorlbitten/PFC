@@ -4,7 +4,10 @@ import '../styles/components/Api.css';
 
 export default function Api({api}) {
   return (
-    <Link to={`apis/${api.id}`}
+    <Link to={{
+        pathname: `apis/${api.id}`,
+        state: api
+      }}
       className="api--link">
       {api.name}
     </Link>
