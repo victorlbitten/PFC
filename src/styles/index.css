@@ -13,3 +13,13 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+.container {
+  padding: 25px 50px;
+}
+
+.container--title {
+  font-size: 30px;
+  color: #3a3a40;
+  margin-bottom: 30px;
+}

@@ -41,8 +41,8 @@ export default class Apis extends React.Component {
     const {apis, ongoingRequest, errorOnRequest} = this.state;
     const errorMessage = "Error loading APIS. Please, refresh the page";
     return (
-      <div className="apis--container">
-        <div className="apis--title">My APIs</div>
+      <div className="container">
+        <div className="container--title">My APIs</div>
         <div className="apis--list">
           {(errorOnRequest)
             ? <div>{errorMessage}</div>
