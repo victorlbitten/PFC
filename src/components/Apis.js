@@ -1,7 +1,7 @@
 import React from 'react';
 import Api from './Api';
 import '../styles/components/Apis.css';
-import factory from '../factories/Apis.factory';
+import { getApis } from '../factories/Apis.factory';
 
 export default class Apis extends React.Component {
   constructor(props) {
@@ -17,7 +17,7 @@ export default class Apis extends React.Component {
 
   async componentDidMount() {
     try {
-      const queriedApis = await factory.getApis();
+      const queriedApis = await getApis();
       this.setState({
         apis: queriedApis,
         ongoingRequest: false
