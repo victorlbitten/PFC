@@ -1,4 +1,5 @@
 import React from 'react';
+import '../styles/components/DetailsHeader.css';
 
 export default class DetailsHeader extends React.Component {
   constructor(props) {
