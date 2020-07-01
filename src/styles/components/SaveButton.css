@@ -1,0 +1,27 @@
+.save-btn--container {
+  text-align: end;
+  margin-top: 25px;
+}
+
+.save-btn {
+  padding: 4px 20px;
+  font-size: 16px;
+  font-weight: 600;
+  color: #fff;
+  background-color: var(--brand-color);
+  outline: none;
+  border: 1px solid var(--brand-color);
+  border-radius: 3px;
+  box-shadow: 1px 1px 1px 0 #aaa;
+  transition: background-color 0.2s ease-out;
+  transition: box-shadow .03s ease-out;
+  user-select: none;
+}
+
+.save-btn:hover {
+  background-color: var(--brand-color-hover);
+}
+
+.save-btn:active {
+  box-shadow: none;
+}

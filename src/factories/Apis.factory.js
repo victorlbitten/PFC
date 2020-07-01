@@ -23,10 +23,29 @@ async function getMapsByApiId (apiId) {
   } catch (error) {
     throw new Error(`Couldn't load mapping for api with ID ${apiId}`);
   }
+}
 
+async function saveApi (api) {
+  const url = `${urlBackend}/apis/${api.id}`;
+  const requestConfigs = {
+    method: 'put',
+    url: url,
+    data: {
+      name: api.name,
+      url: api.url,
+      method: api.method
+    }
+  };
+  try {
+    await axios(requestConfigs);
+    return;
+  } catch (error) {
+    throw new Error("Couldn't save API changes. Please, try again.")
+  }
 }
 
 export {
   getApis,
-  getMapsByApiId
+  getMapsByApiId,
+  saveApi
 }
