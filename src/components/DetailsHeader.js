@@ -29,6 +29,7 @@ export default class DetailsHeader extends React.Component {
   render() {
     const fields = [
       {name: 'name', title: 'Name'},
+      {name: 'method', title: 'Method'},
       {name: 'url', title: 'URL'}
     ];
     return (
