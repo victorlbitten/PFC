@@ -1,0 +1,21 @@
+.maps-container {
+  padding: 0 15px;
+  margin: 20px 0;
+}
+
+.map-element {
+  padding: 8px 15px;
+  margin: 5px 0;
+  background-color: #fafafa;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  color: #666;
+  width: fit-content;
+  user-select: none;
+  transition: background-color 0.1s ease-out;
+}
+
+.map-element:hover {
+  background-color: #f0f0f0;
+  cursor: pointer;
+}

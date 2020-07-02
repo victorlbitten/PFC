@@ -1,6 +1,7 @@
 import React from 'react';
 import RedirectBtn from './RedirectBtn';
 import DetailsHeader from './DetailsHeader';
+import Maps from './Maps';
 import SaveButton from './SaveButton';
 import { getMapsByApiId } from '../factories/Apis.factory';
 import '../styles/components/ApiDetails.css';
@@ -71,6 +72,7 @@ function DetailsContainer ({api, mapping, show, formEventsHandler}) {
     return (
       <div>
         <DetailsHeader api={api} handler={formEventsHandler}/>
+        <Maps maps={mapping} />
         <SaveButton api={api} mapping={mapping}/>
       </div>
     )
