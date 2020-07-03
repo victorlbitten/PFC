@@ -124,15 +124,15 @@ const getTargetElementParent = (state, element) => {
 const promoteElementChanges = (state, element, elementCurrentName, elementParent) => {
   // zueira -> Remover replacer e parâmetro state
   const replacer = Object.assign({}, state.maps.sensor.mapping.measures);
-  elementCurrentName = 'neeeeew';
+  elementCurrentName = 'NewName';
 
   const elementFormerName = element.relativePath[element.relativePath.length - 1];
-  const elementNameIsUnchanged = (elementFormerName === elementCurrentName);
+  const elementNameHasChanged = (elementFormerName !== elementCurrentName);
 
-  if (elementNameIsUnchanged) {
-    elementParent[elementCurrentName] = replacer;
-  } else {
+  // Substituir os dados antigos pelos atuais
+  elementParent[elementCurrentName] = replacer;
+
+  if (elementNameHasChanged) {
     delete elementParent[elementFormerName];
-    elementParent[elementCurrentName] = replacer;
   }
 }
