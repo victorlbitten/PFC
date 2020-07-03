@@ -7,45 +7,16 @@ export default class Maps extends React.Component {
     this.state = {
       maps: this.props.maps
     }
-    console.log(this.state.maps);
 
     this.handleAddsAndEdits = this.handleAddsAndEdits.bind(this);
-    this.show = this.show.bind(this);
   }
 
-  handleAddsAndEdits(info, name) {
-    console.log(info);
-    const getNextPath = (currentPath) => {
-      const currentIndex = info.relativePath.indexOf(currentPath);
-      return info.relativePath[currentIndex + 1];
-    }
-
-    const change = (accessor, target, path, replacer, count) => {
-      if (!(count > 0)) {
-        const replace = (name === target);
-        if (replace) {
-          accessor[target] = replacer;
-        } else {
-          delete accessor[target];
-          accessor[name] = replacer
-        }
-        return;
-      }
-      change(accessor[path].mapping, target, getNextPath(path), replacer, count-1)
-    }
-
-    const { relativePath } = info;
-    const targetedProperty = relativePath.pop();
-    name = 'newProperty';
+  handleAddsAndEdits(element, elementCurrentName) {
     this.setState((state) => {
-      const replacer = Object.assign({}, state.maps.sensor.mapping.name);
-      change(state.maps, targetedProperty, relativePath[0], replacer, relativePath.length);
-      return {maps: state.maps}
+      const elementParent = getTargetElementParent(state, element);
+      promoteElementChanges(state, element, elementCurrentName, elementParent);
+      return {maps: state.maps};
     })
-  }
-
-  show() {
-    console.log(this.state.maps);
   }
 
   render() {
@@ -55,7 +26,6 @@ export default class Maps extends React.Component {
           mapping={this.state.maps}
           addOrEdit={this.handleAddsAndEdits}  
         />
-        <button onClick={this.show}>Show</button>
       </div>
     )
   }
@@ -122,4 +92,47 @@ function DrawSubmaps ({addOrEdit, subMaps, depth, path}) {
       />
     ))
   )
+}
+
+const getTargetElementParent = (state, element) => {
+  const getNextPath = (currentPath) => {
+    const currentIndex = element.relativePath.indexOf(currentPath);
+    const nextPathIndex = currentIndex + 1;
+    return element.relativePath[nextPathIndex];
+  }
+  const getNextAccessor = (currentAccessor, currentPath) => (currentAccessor[currentPath].mapping);
+  const getNextCount = (count) => (count - 1);
+  
+  const iterateTillElementParent = (accessor, path, count) => {
+    if (count === 0) {
+      return accessor;
+    }
+    
+    const nextAccessor = getNextAccessor(accessor, path);
+    const nextPath = getNextPath(path);
+    const nextCount = getNextCount(count);
+
+    return iterateTillElementParent(nextAccessor, nextPath, nextCount)
+  }
+
+  const elementRelativePath = element.relativePath;
+  const numberOfIterations = (elementRelativePath.length - 1);
+  const relativePathFirstStep = elementRelativePath[0];
+  return iterateTillElementParent(state.maps, relativePathFirstStep, numberOfIterations);
+}
+
+const promoteElementChanges = (state, element, elementCurrentName, elementParent) => {
+  // zueira -> Remover replacer e parâmetro state
+  const replacer = Object.assign({}, state.maps.sensor.mapping.measures);
+  elementCurrentName = 'neeeeew';
+
+  const elementFormerName = element.relativePath[element.relativePath.length - 1];
+  const elementNameIsUnchanged = (elementFormerName === elementCurrentName);
+
+  if (elementNameIsUnchanged) {
+    elementParent[elementCurrentName] = replacer;
+  } else {
+    delete elementParent[elementFormerName];
+    elementParent[elementCurrentName] = replacer;
+  }
 }
