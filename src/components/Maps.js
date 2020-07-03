@@ -8,14 +8,21 @@ export default class Maps extends React.Component {
       maps: this.props.maps
     }
 
-    this.handleAddsAndEdits = this.handleAddsAndEdits.bind(this);
+    this.handleChanges = this.handleChanges.bind(this);
   }
 
-  handleAddsAndEdits(element, elementCurrentName) {
+  handleChanges(element, elementCurrentName) {
     this.setState((state) => {
       const elementParent = getTargetElementParent(state, element);
       promoteElementChanges(state, element, elementCurrentName, elementParent);
       return {maps: state.maps};
+    })
+  }
+
+  componentDidMount () {
+    this.setState((state) => {
+      appendAddButonToContainers(state.maps);
+      return {maps: state.maps}
     })
   }
 
@@ -24,7 +31,7 @@ export default class Maps extends React.Component {
       <div>
         <DrawMaps
           mapping={this.state.maps}
-          addOrEdit={this.handleAddsAndEdits}  
+          addOrEdit={this.handleChanges}  
         />
       </div>
     )
@@ -44,9 +51,17 @@ function DrawMaps ({mapping, addOrEdit}) {
             depth={initialDepth}
           />
         )
-      })}
+      })
+      .sort((a) => sortAddBtnAsLast(a.props.elementInfo))}
     </div>
   )
+}
+
+function sortAddBtnAsLast (first) {
+  return (first.type !== 'add')
+    ? -1
+    : 0
+
 }
 
 function MapElement ({addOrEdit, elementName, elementInfo, depth, path=null}) {
@@ -62,8 +77,11 @@ function MapElement ({addOrEdit, elementName, elementInfo, depth, path=null}) {
     <div className="map-elements-container">
       <div className="map-element"
         style={{'marginLeft': (20*depth + 'px')}}
-        onClick={(event) => addOrEdit(elementInfo, elementName)}>
-          {elementName}
+        onClick={() => addOrEdit(elementInfo, elementName)}>
+          {(elementInfo.type === 'add')
+            ? '+'
+            : elementName
+          }
       </div>
 
       {(shouldDrawSubmaps)
@@ -91,8 +109,10 @@ function DrawSubmaps ({addOrEdit, subMaps, depth, path}) {
         path={path}
       />
     ))
+    .sort((a) => sortAddBtnAsLast(a.props.elementInfo))
   )
 }
+
 
 const getTargetElementParent = (state, element) => {
   const getNextPath = (currentPath) => {
@@ -123,7 +143,7 @@ const getTargetElementParent = (state, element) => {
 
 const promoteElementChanges = (state, element, elementCurrentName, elementParent) => {
   // zueira -> Remover replacer e parâmetro state
-  const replacer = Object.assign({}, state.maps.sensor.mapping.measures);
+  const replacer = Object.assign({}, state.maps.sensor.mapping.name);
   elementCurrentName = 'NewName';
 
   const elementFormerName = element.relativePath[element.relativePath.length - 1];
@@ -131,8 +151,47 @@ const promoteElementChanges = (state, element, elementCurrentName, elementParent
 
   // Substituir os dados antigos pelos atuais
   elementParent[elementCurrentName] = replacer;
+  
+  if (element.type === 'add') {
+    appendNewElement(elementParent, true);
+    return;
+  }
 
   if (elementNameHasChanged) {
     delete elementParent[elementFormerName];
   }
 }
+
+const appendAddButonToContainers = (maps) => {
+  const typesToAppend = ['object', 'object_array'];
+
+  const appendingIteration = (element) => {
+    const isRoot = (!element.type);
+    const shouldAppend = ((isRoot) || (typesToAppend.includes(element.type)));
+
+    const getNextElement = () => {
+      return (isRoot)
+        ? element
+        : element.mapping
+    }
+
+    if (shouldAppend) {
+      const nextElement = getNextElement();
+      Object.keys(nextElement).forEach((key) => appendingIteration(nextElement[key]));
+      appendNewElement(element, isRoot);
+    }
+  }
+
+  appendingIteration(maps);
+}
+
+const appendNewElement = (
+  parentElement,
+  isRoot=false,
+  newElement={
+    type:'add', mapping:{}}
+  ) => {
+    (isRoot)
+      ? (parentElement.add = newElement)
+      : (parentElement.mapping.add = newElement)
+  }
