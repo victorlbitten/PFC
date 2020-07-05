@@ -13,6 +13,7 @@ export default class Apis extends React.Component {
     };
 
     this.buildApisList = this.buildApisList.bind(this);
+    this.handleApiDeletion = this.handleApiDeletion.bind(this);
   }
 
   async componentDidMount() {
@@ -28,11 +29,19 @@ export default class Apis extends React.Component {
     }
   }
 
+  handleApiDeletion(apiId) {
+    const indexOfApiToRemove = (this.state.apis.findIndex(({id}, index) => apiId === id));
+    this.setState((state) => {
+      state.apis.splice(indexOfApiToRemove, 1);
+      return {apis: state.apis}
+    });
+  }
+
   buildApisList(apis, ongoingRequest) {
     return (ongoingRequest)
       ? <div>Loading...</div>
       : apis.map((api) => (
-          <Api key={api.id} api={api}/>
+          <Api key={api.id} api={api} onDelete={this.handleApiDeletion}/>
         )
     )
   }

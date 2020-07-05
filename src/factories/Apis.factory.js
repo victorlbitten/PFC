@@ -47,8 +47,15 @@ async function saveApi (api, mapping) {
   }
 }
 
+async function deleteApi (apiId) {
+  const url = `${urlBackend}/apis/${apiId}`;
+  const response = await axios.delete(url);
+  console.log(response);
+}
+
 export {
   getApis,
   getMapsByApiId,
-  saveApi
+  saveApi,
+  deleteApi
 }
