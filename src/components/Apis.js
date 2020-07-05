@@ -30,7 +30,7 @@ export default class Apis extends React.Component {
   }
 
   handleApiDeletion(apiId) {
-    const indexOfApiToRemove = (this.state.apis.findIndex(({id}, index) => apiId === id));
+    const indexOfApiToRemove = (this.state.apis.findIndex(({id}) => apiId === id));
     this.setState((state) => {
       state.apis.splice(indexOfApiToRemove, 1);
       return {apis: state.apis}
