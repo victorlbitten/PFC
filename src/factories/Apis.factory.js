@@ -25,15 +25,18 @@ async function getMapsByApiId (apiId) {
   }
 }
 
-async function saveApi (api) {
+async function saveApi (api, mapping) {
   const url = `${urlBackend}/apis/${api.id}`;
   const requestConfigs = {
     method: 'put',
     url: url,
     data: {
-      name: api.name,
-      url: api.url,
-      method: api.method
+      api: {
+        name: api.name,
+        url: api.url,
+        method: api.method
+      },
+      mapping: mapping
     }
   };
   try {

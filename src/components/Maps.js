@@ -10,7 +10,6 @@ export default class Maps extends React.Component {
     }
 
     this.handleChanges = this.handleChanges.bind(this);
-    this.show = this.show.bind(this);
   }
 
   handleChanges(element, elementCurrentName) {
@@ -28,10 +27,6 @@ export default class Maps extends React.Component {
     })
   }
 
-  show() {
-    console.log(this.state.maps);
-  }
-
   render() {
     return (
       <div>
@@ -39,7 +34,6 @@ export default class Maps extends React.Component {
           mapping={this.state.maps}
           addOrEdit={this.handleChanges}  
         />
-        <button onClick={this.show}>show</button>
       </div>
     )
   }

@@ -5,7 +5,7 @@ import { saveApi } from '../factories/Apis.factory';
 export default function SaveButton ({api, mapping}) {
   const saveChanges = () => {
     try {
-      saveApi(api);
+      saveApi(api, mapping);
     } catch (error) {
       console.log(error);
     }

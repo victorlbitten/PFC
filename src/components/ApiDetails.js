@@ -17,6 +17,8 @@ export default class ApiDetail extends React.Component {
       ongoingRequest: true,
       errorOnRequest: false
     };
+
+    this.show = this.show.bind(this);
   }
 
   async componentDidMount() {
@@ -40,6 +42,10 @@ export default class ApiDetail extends React.Component {
       return {api: state.api};
     })
   }
+
+  show() {
+    console.log(this.state.mapping)
+  }
   
 
   render() {
@@ -60,6 +66,7 @@ export default class ApiDetail extends React.Component {
           show={!ongoingRequest}
           formEventsHandler={this.formEventsHandler}
         />
+        <button onClick={this.show}>Show</button>
       </div>
     )
   }
