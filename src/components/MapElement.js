@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import '../styles/components/MapElement.css';
 
 export default class MapElement extends React.Component {
@@ -14,6 +14,7 @@ export default class MapElement extends React.Component {
 
     this.toggleEditMode = this.toggleEditMode.bind(this);
     this.saveEditions = this.saveEditions.bind(this);
+    this.handleDelete = this.handleDelete.bind(this);
   }
 
   toggleEditMode() {
@@ -40,6 +41,13 @@ export default class MapElement extends React.Component {
     }, () => this.props.saveChanges(this.state.element.element, this.state.element.name));
   }
 
+  handleDelete() {
+    this.props.deleteMap({
+      name: this.state.element.name,
+      element: this.state.element.element
+    });
+  }
+
   render() {
     const { depth } = this.props;
     const { element, isEditing } = this.state;
@@ -51,15 +59,11 @@ export default class MapElement extends React.Component {
               element={element}
               saveEditions={this.saveEditions}
               />
-          : (
-            <div className="map-element"
-              onClick={this.toggleEditMode}>
-                {(this.state.element.name === 'add')
-                  ? '+'
-                  : this.state.element.name
-                }
-            </div>
-          )
+          : <DescriptiveElement
+              element={this.state.element}
+              toggleEdit={this.toggleEditMode}
+              handleDelete={this.handleDelete}  
+            />
         }
       </div>
     )
@@ -69,6 +73,29 @@ export default class MapElement extends React.Component {
 const getElementStyles = (depth) => ({
   marginLeft: 15*depth + 'px'
 })
+
+function DescriptiveElement ({element, toggleEdit, handleDelete}) {
+  const [showDelete, setShowDelete] = useState(false);
+
+  return (
+    <div className="map-element"
+      onMouseEnter={() => setShowDelete(true)}
+      onMouseLeave={() => setShowDelete(false)}
+      onClick={toggleEdit}>
+        <div>
+          {(element.element.type === "add")
+            ? '+'
+            : element.name
+          }
+        </div>
+        {showDelete && (
+          <div className="delete-map-btn" onClick={handleDelete}>
+            x
+          </div>
+        )}
+    </div>
+  )
+}
 
 function EditionElement ({element, saveEditions}) {
   if (element.element.type === 'add') {
