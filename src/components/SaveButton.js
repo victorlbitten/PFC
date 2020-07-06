@@ -1,17 +1,33 @@
 import React from 'react';
 import '../styles/components/SaveButton.css';
-import { saveApi } from '../factories/Apis.factory';
+import { saveApi, createApi } from '../factories/Apis.factory';
 
-export default function SaveButton ({api, mapping}) {
-  const saveChanges = () => {
+export default function SaveButton ({api, mapping, newApi}) {
+  function createNewApi () {
+    try {
+      createApi(api, mapping)
+    } catch(error) {
+      console.log(error);
+    }
+  }
+
+  function saveEditions () {
     try {
       saveApi(api, mapping);
     } catch (error) {
       console.log(error);
     }
+  }
+
+  const handleSave = () => {
+    if (newApi) {
+      createNewApi();
+    } else {
+      saveEditions();
+    }
   };
   return (
-    <div className="save-btn--container" onClick={saveChanges}>
+    <div className="save-btn--container" onClick={handleSave}>
       <button
         className="save-btn">
         Save

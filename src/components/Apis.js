@@ -17,10 +17,16 @@ export default class Apis extends React.Component {
   }
 
   async componentDidMount() {
+    const addButtonApi = {
+      id: 'create',
+      method: null,
+      name: '+',
+      url: ''
+    };
     try {
       const queriedApis = await getApis();
       this.setState({
-        apis: queriedApis,
+        apis: [...queriedApis, addButtonApi],
         ongoingRequest: false
       });
     } catch (error) {

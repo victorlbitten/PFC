@@ -47,6 +47,25 @@ async function saveApi (api, mapping) {
   }
 }
 
+async function createApi (api, mapping) {
+  const url = `${urlBackend}/apis`;
+  const requestConfigs = {
+    method: 'post',
+    url: url,
+    data: {
+      api: api,
+      mapping: mapping
+    }
+  }
+
+  try {
+    await axios(requestConfigs);
+    return;
+  } catch (error) {
+    throw new Error("Couldn't create API. Please, try again");
+  }
+}
+
 async function deleteApi (apiId) {
   const url = `${urlBackend}/apis/${apiId}`;
   const response = await axios.delete(url);
@@ -57,5 +76,6 @@ export {
   getApis,
   getMapsByApiId,
   saveApi,
+  createApi,
   deleteApi
 }

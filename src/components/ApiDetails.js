@@ -15,7 +15,8 @@ export default class ApiDetail extends React.Component {
       api: props.location.state,
       mapping: {},
       ongoingRequest: true,
-      errorOnRequest: false
+      errorOnRequest: false,
+      newApi: (props.location.state.id==="create") 
     };
 
     this.show = this.show.bind(this);
@@ -23,7 +24,9 @@ export default class ApiDetail extends React.Component {
 
   async componentDidMount() {
     try {
-      const queriedMap = await getMapsByApiId(this.state.api.id);
+      const queriedMap = (this.state.newApi)
+        ? {}
+        : await getMapsByApiId(this.state.api.id);
       this.setState({
         mapping: queriedMap,
         ongoingRequest: false
@@ -65,6 +68,7 @@ export default class ApiDetail extends React.Component {
           mapping={mapping}
           show={!ongoingRequest}
           formEventsHandler={this.formEventsHandler}
+          newApi={this.state.newApi}
         />
         <button onClick={this.show}>Show</button>
       </div>
@@ -72,7 +76,7 @@ export default class ApiDetail extends React.Component {
   }
 }
 
-function DetailsContainer ({api, mapping, show, formEventsHandler}) {
+function DetailsContainer ({api, mapping, show, formEventsHandler, newApi}) {
   const LoadingMessage = () => (<div>Loading API details...</div>);
 
   const ShownComponents = ({api, mapping, formEventsHandler}) => {
@@ -80,7 +84,7 @@ function DetailsContainer ({api, mapping, show, formEventsHandler}) {
       <div>
         <DetailsHeader api={api} handler={formEventsHandler}/>
         <Maps maps={mapping} />
-        <SaveButton api={api} mapping={mapping}/>
+        <SaveButton api={api} mapping={mapping} newApi={newApi}/>
       </div>
     )
   };
