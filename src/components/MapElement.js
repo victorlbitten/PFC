@@ -75,11 +75,12 @@ const getElementStyles = (depth) => ({
 })
 
 function DescriptiveElement ({element, toggleEdit, handleDelete}) {
+  const shouldShowDelete = (element.name !== 'add');
   const [showDelete, setShowDelete] = useState(false);
 
   return (
     <div className="map-element"
-      onMouseEnter={() => setShowDelete(true)}
+      onMouseEnter={() => setShowDelete(shouldShowDelete)}
       onMouseLeave={() => setShowDelete(false)}
       onClick={toggleEdit}>
         <div>

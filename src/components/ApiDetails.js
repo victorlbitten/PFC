@@ -19,7 +19,6 @@ export default class ApiDetail extends React.Component {
       newApi: (props.location.state.id==="create") 
     };
 
-    this.show = this.show.bind(this);
   }
 
   async componentDidMount() {
@@ -46,11 +45,6 @@ export default class ApiDetail extends React.Component {
     })
   }
 
-  show() {
-    console.log(this.state.mapping)
-  }
-  
-
   render() {
     const {api, mapping, ongoingRequest, errorOnRequest} = this.state;
     if (errorOnRequest) {
@@ -70,7 +64,6 @@ export default class ApiDetail extends React.Component {
           formEventsHandler={this.formEventsHandler}
           newApi={this.state.newApi}
         />
-        <button onClick={this.show}>Show</button>
       </div>
     )
   }

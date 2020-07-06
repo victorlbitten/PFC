@@ -4,12 +4,13 @@ import DeleteButton from './DeleteButton';
 import '../styles/components/Api.css';
 
 export default function Api({api, onDelete}) {
-  const [isShown, setIsShown] = useState(false);
+  const shouldShowDeleteBtn = (api.id !== 'create');
+  const [showDeleteBtn, setshowDeleteBtn] = useState(false);
 
   return (
     <div style={{position: 'relative'}}
-      onMouseEnter={() => setIsShown(true)}
-      onMouseLeave={() => setIsShown(false)}>
+      onMouseEnter={() => setshowDeleteBtn(shouldShowDeleteBtn)}
+      onMouseLeave={() => setshowDeleteBtn(false)}>
       <Link to={{
           pathname: `apis/${api.id}`,
           state: api
@@ -17,7 +18,7 @@ export default function Api({api, onDelete}) {
         className="api--link">
         {api.name}
       </Link>
-      <DeleteButton isShown={isShown} apiId={api.id} onDelete={onDelete}/>
+      <DeleteButton isShown={showDeleteBtn} apiId={api.id} onDelete={onDelete}/>
     </div>
   )
 }
