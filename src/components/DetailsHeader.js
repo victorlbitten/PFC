@@ -28,11 +28,18 @@ export default class DetailsHeader extends React.Component {
   }
 
   render() {
+    const { api } = this.state;
     const fields = [
       {name: 'name', title: 'Name'},
       {name: 'method', title: 'Method'},
       {name: 'url', title: 'URL'}
     ];
+    const defaultValues = {
+      name: (api.name !== '+') ? api.name : '',
+      method: api.method || '',
+      url: api.url || ''
+    }
+
     return (
       <form onSubmit={this.handleSubmit}>
         {fields.map((field, index) =>
@@ -40,8 +47,9 @@ export default class DetailsHeader extends React.Component {
             {field.title}: 
             <input
               type="text"
-              defaultValue={this.state.api[field.name]}
+              defaultValue={defaultValues[field.name]}
               onChange={(event) => this.handleChange(event, field.name)}
+              autoFocus={index===0}
             />
           </label>
         )}
