@@ -1,0 +1,42 @@
+.form-container {
+  --border-color: #6a6a70;
+  --border-light-color: #8a8ad0;
+
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.header-label {
+  color: #fff;
+  font-size: 17px;
+  font-weight: 600;
+  border-radius: 5px;
+  border: 1px solid var(--border-color);
+  background-color: var(--border-color);
+  padding: 1px 1px 1px 5px;
+  font-variant-caps: all-petite-caps;
+}
+
+.header-label:focus-within {
+  border: 1px solid var(--border-light-color);
+  background-color: var(--border-light-color);
+}
+
+.header-label-text {
+  user-select: none;
+  margin-right: 5px;
+}
+
+.header-input {
+  border-radius: 4px;
+  color: var(--brand-dark-color);
+  padding: 5px;
+  width: 270px;
+  border: none;
+  outline: none;
+}
+
+.header-input:focus + .header-label{
+  background-color: red;
+}
