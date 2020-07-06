@@ -59,8 +59,8 @@ async function createApi (api, mapping) {
   }
 
   try {
-    await axios(requestConfigs);
-    return;
+    const result = await axios(requestConfigs);
+    return result.status;
   } catch (error) {
     throw new Error("Couldn't create API. Please, try again");
   }
@@ -69,7 +69,7 @@ async function createApi (api, mapping) {
 async function deleteApi (apiId) {
   const url = `${urlBackend}/apis/${apiId}`;
   const response = await axios.delete(url);
-  console.log(response);
+  return response;
 }
 
 export {
