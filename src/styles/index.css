@@ -1,5 +1,7 @@
 body {
   --brand-color: #67d0ef;
+  --brand-color-hover: #57c0df;
+  --brand-dark-color: #3a3a40;
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
@@ -12,4 +14,14 @@ body {
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
+}
+
+.container {
+  padding: 25px 50px;
+}
+
+.container--title {
+  font-size: 30px;
+  color: var(--brand-dark-color);
+  margin-bottom: 30px;
 }

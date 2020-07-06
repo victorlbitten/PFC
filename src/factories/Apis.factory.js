@@ -11,6 +11,71 @@ async function getApis () {
   }
 }
 
-export default {
-  getApis
+async function getMapsByApiId (apiId) {
+  const url = `${urlBackend}/apis/${apiId}/mapping`;
+  const extractParsedObjectFromReturn = (requestResult) => (
+    JSON.parse(requestResult.data[0].mapping)
+  );
+
+  try {
+    const requestResult = await axios.get(url);
+    return extractParsedObjectFromReturn(requestResult);
+  } catch (error) {
+    throw new Error(`Couldn't load mapping for api with ID ${apiId}`);
+  }
+}
+
+async function saveApi (api, mapping) {
+  const url = `${urlBackend}/apis/${api.id}`;
+  const requestConfigs = {
+    method: 'put',
+    url: url,
+    data: {
+      api: {
+        name: api.name,
+        url: api.url,
+        method: api.method
+      },
+      mapping: mapping
+    }
+  };
+  try {
+    await axios(requestConfigs);
+    return;
+  } catch (error) {
+    throw new Error("Couldn't save API changes. Please, try again.")
+  }
+}
+
+async function createApi (api, mapping) {
+  const url = `${urlBackend}/apis`;
+  const requestConfigs = {
+    method: 'post',
+    url: url,
+    data: {
+      api: api,
+      mapping: mapping
+    }
+  }
+
+  try {
+    const result = await axios(requestConfigs);
+    return result.status;
+  } catch (error) {
+    throw new Error("Couldn't create API. Please, try again");
+  }
+}
+
+async function deleteApi (apiId) {
+  const url = `${urlBackend}/apis/${apiId}`;
+  const response = await axios.delete(url);
+  return response;
+}
+
+export {
+  getApis,
+  getMapsByApiId,
+  saveApi,
+  createApi,
+  deleteApi
 }
