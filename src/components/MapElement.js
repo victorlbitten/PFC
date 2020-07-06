@@ -110,18 +110,25 @@ function EditionElement ({element, saveEditions}) {
     
     saveEditions(element);
   }
+
+  const defaultValues = {
+    name: (element.name !== 'add') ? element.name : '',
+    type: element.type || 'property'
+  };
+
   return (
     <form onSubmit={handleSubmission}>
       <label>
         Name:
         <input
-          defaultValue={element.name}
-          name={'name'}/>
+          defaultValue={defaultValues.name}
+          name={'name'}
+          autoFocus={true}/>
       </label>
       <label>
         Type
         <input
-          defaultValue={element.element.type}
+          defaultValue={defaultValues.type}
           name={'type'}/>
       </label>
       <button type={'submit'} style={{display: 'none'}}/>
