@@ -8,9 +8,34 @@
   width: fit-content;
   user-select: none;
   transition: background-color 0.1s ease-out;
+  position: relative;
 }
 
 .map-element:hover {
   background-color: #f0f0f0;
   cursor: pointer;
+}
+
+.delete-map-btn {
+  position: absolute;
+  z-index: 2;
+  top: -5px;
+  right: -5px;
+  height: 15px;
+  width: 15px;
+  display: flex;
+  align-items: baseline;
+  justify-content: space-around;
+  background-color: #f05050;
+  border-radius: 50%;
+  color: #fff;
+  font-weight: 900;
+  font-size: 12px;
+  transition: all 0.1s ease-out;
+}
+
+.delete-map-btn:hover {
+  height: 16px;
+  width: 16px;
+  font-size: 13px;
 }

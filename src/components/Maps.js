@@ -10,6 +10,7 @@ export default class Maps extends React.Component {
     }
 
     this.handleChanges = this.handleChanges.bind(this);
+    this.deleteMap = this.deleteMap.bind(this);
   }
 
   handleChanges(element, elementCurrentName) {
@@ -27,19 +28,28 @@ export default class Maps extends React.Component {
     })
   }
 
+  deleteMap({name, element}) {
+    const parentElement = getTargetElementParent(this.state, element);
+    this.setState((state) => {
+      delete parentElement[name];
+      return {maps: state.maps}
+    })
+  }
+
   render() {
     return (
       <div>
         <DrawMaps
           mapping={this.state.maps}
           addOrEdit={this.handleChanges}  
+          deleteMap={this.deleteMap}
         />
       </div>
     )
   }
 }
 
-function DrawMaps ({mapping, addOrEdit}) {
+function DrawMaps ({mapping, addOrEdit, deleteMap}) {
   const drawMapElements = (element, depth=0, path=null) => {
     const elementsToDraw = Object.entries(element);
     return elementsToDraw.map((element, index) => {
@@ -68,6 +78,7 @@ function DrawMaps ({mapping, addOrEdit}) {
               element={element}
               depth={depth}
               saveChanges={addOrEdit}
+              deleteMap={deleteMap}
             />
             {drawMapElements(element[1].mapping, depth + 1, element[1].relativePath)}
           </div>
@@ -80,6 +91,7 @@ function DrawMaps ({mapping, addOrEdit}) {
             element={element}
             depth={depth}
             saveChanges={addOrEdit}
+            deleteMap={deleteMap}
           />
         )
       }
