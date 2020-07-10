@@ -41,11 +41,15 @@ export default class DetailsHeader extends React.Component {
     }
 
     return (
-      <form onSubmit={this.handleSubmit}>
+      <form onSubmit={this.handleSubmit}
+        className="form-container">
         {fields.map((field, index) =>
-          <label key={index}>
-            {field.title}: 
+          <label key={index}
+            className="header-label">
+            <span className="header-label-text">{field.title}: </span>
             <input
+              className="header-input"
+              spellCheck={false}
               type="text"
               defaultValue={defaultValues[field.name]}
               onChange={(event) => this.handleChange(event, field.name)}

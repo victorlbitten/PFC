@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import classNames from 'classnames';
 import '../styles/components/MapElement.css';
 
 export default class MapElement extends React.Component {
@@ -111,28 +112,35 @@ function EditionElement ({element, saveEditions}) {
     saveEditions(element);
   }
 
+  const inputFields = [
+    {name: 'name', title: 'Name', autoFocus: true},
+    {name: 'type', title: 'Type'}
+  ]
+
   const defaultValues = {
     name: (element.name !== 'add') ? element.name : '',
-    type: element.type || 'property'
+    type: (element.element.type !== 'add') ? element.element.type : ''
   };
 
   return (
-    <form onSubmit={handleSubmission}>
-      <label>
-        Name:
-        <input
-          defaultValue={defaultValues.name}
-          name={'name'}
-          autoFocus={true}/>
-      </label>
-      <label>
-        Type
-        <input
-          defaultValue={defaultValues.type}
-          name={'type'}/>
-      </label>
-      <button type={'submit'} style={{display: 'none'}}/>
-    </form>
+    <div className="map-form-container">
+      <form onSubmit={handleSubmission} className="map-form">
+        {inputFields.map((field) => (
+          <label className="map-form-label" key={Math.random()}>
+            <span className="map-label-text">{ field.title }</span>
+            <input className={classNames({
+              'map-form-input': true,
+              'map-form-type-input': (field.name === 'type')
+              })}
+              spellCheck={false}
+              autoFocus={field.autoFocus}
+              defaultValue={defaultValues[field.name]}
+              name={field.name}/>
+          </label>
+        ))}
+        <button type={'submit'} style={{display: 'none'}}/>
+      </form>
+    </div>
   )
 }
 
