@@ -49,6 +49,7 @@ export default class DetailsHeader extends React.Component {
             <span className="header-label-text">{field.title}: </span>
             <input
               className="header-input"
+              spellCheck={false}
               type="text"
               defaultValue={defaultValues[field.name]}
               onChange={(event) => this.handleChange(event, field.name)}

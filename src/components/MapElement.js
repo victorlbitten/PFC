@@ -132,6 +132,7 @@ function EditionElement ({element, saveEditions}) {
               'map-form-input': true,
               'map-form-type-input': (field.name === 'type')
               })}
+              spellCheck={false}
               autoFocus={field.autoFocus}
               defaultValue={defaultValues[field.name]}
               name={field.name}/>

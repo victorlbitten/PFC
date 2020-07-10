@@ -27,9 +27,10 @@ export default function SaveButton ({api, mapping, newApi}) {
     }
   };
   return (
-    <div className="save-btn--container" onClick={handleSave}>
+    <div className="save-btn--container">
       <button
-        className="save-btn">
+        className="save-btn"
+        onClick={handleSave}>
         Save
       </button>
     </div>
