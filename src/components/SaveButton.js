@@ -2,10 +2,10 @@ import React from 'react';
 import '../styles/components/SaveButton.css';
 import { saveApi, createApi } from '../factories/Apis.factory';
 
-export default function SaveButton ({api, mapping, newApi}) {
+export default function SaveButton ({api, description, newApi}) {
   function createNewApi () {
     try {
-      createApi(api, mapping)
+      createApi(api, description)
     } catch(error) {
       console.log(error);
     }
@@ -13,7 +13,7 @@ export default function SaveButton ({api, mapping, newApi}) {
 
   function saveEditions () {
     try {
-      saveApi(api, mapping);
+      saveApi(api, description);
     } catch (error) {
       console.log(error);
     }
@@ -26,6 +26,7 @@ export default function SaveButton ({api, mapping, newApi}) {
       saveEditions();
     }
   };
+
   return (
     <div className="save-btn--container">
       <button

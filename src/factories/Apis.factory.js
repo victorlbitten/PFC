@@ -11,10 +11,10 @@ async function getApis () {
   }
 }
 
-async function getMapsByApiId (apiId) {
-  const url = `${urlBackend}/apis/${apiId}/mapping`;
+async function getDescriptionByApiId (apiId) {
+  const url = `${urlBackend}/apis/${apiId}/app-description`;
   const extractParsedObjectFromReturn = (requestResult) => (
-    JSON.parse(requestResult.data[0].mapping)
+    JSON.parse(requestResult.data[0].description)
   );
 
   try {
@@ -25,7 +25,7 @@ async function getMapsByApiId (apiId) {
   }
 }
 
-async function saveApi (api, mapping) {
+async function saveApi (api, description) {
   const url = `${urlBackend}/apis/${api.id}`;
   const requestConfigs = {
     method: 'put',
@@ -36,7 +36,7 @@ async function saveApi (api, mapping) {
         url: api.url,
         method: api.method
       },
-      mapping: mapping
+      description: description
     }
   };
   try {
@@ -47,14 +47,14 @@ async function saveApi (api, mapping) {
   }
 }
 
-async function createApi (api, mapping) {
+async function createApi (api, description) {
   const url = `${urlBackend}/apis`;
   const requestConfigs = {
     method: 'post',
     url: url,
     data: {
       api: api,
-      mapping: mapping
+      description: description
     }
   }
 
@@ -74,7 +74,7 @@ async function deleteApi (apiId) {
 
 export {
   getApis,
-  getMapsByApiId,
+  getDescriptionByApiId,
   saveApi,
   createApi,
   deleteApi

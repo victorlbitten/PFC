@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import classNames from 'classnames';
-import '../styles/components/MapElement.css';
+import '../styles/components/DescriptionElement.css';
 
 export default class MapElement extends React.Component {
   constructor(props) {
@@ -24,16 +24,16 @@ export default class MapElement extends React.Component {
 
   saveEditions(elementToSave) {
     const isNestable = ['object', 'object_array'].includes(elementToSave.element.type);
-    const addEmptyMapping = (
+    const addEmptyDescription = (
       elementToSave.isNewElement || (
         isNestable && (
-          Array.isArray(elementToSave.element.mapping) ||
-          !Object.keys(elementToSave.element.mapping).length
+          Array.isArray(elementToSave.element.description) ||
+          !Object.keys(elementToSave.element.description).length
         )
       )
     )
-    if (addEmptyMapping) {
-      elementToSave.element.mapping = {};
+    if (addEmptyDescription) {
+      elementToSave.element.description = {};
     }
 
     this.setState({
@@ -43,7 +43,7 @@ export default class MapElement extends React.Component {
   }
 
   handleDelete() {
-    this.props.deleteMap({
+    this.props.deleteDescriptionElement({
       name: this.state.element.name,
       element: this.state.element.element
     });
@@ -80,7 +80,7 @@ function DescriptiveElement ({element, toggleEdit, handleDelete}) {
   const [showDelete, setShowDelete] = useState(false);
 
   return (
-    <div className="map-element"
+    <div className="description-element"
       onMouseEnter={() => setShowDelete(shouldShowDelete)}
       onMouseLeave={() => setShowDelete(false)}
       onClick={toggleEdit}>
@@ -91,7 +91,7 @@ function DescriptiveElement ({element, toggleEdit, handleDelete}) {
           }
         </div>
         {showDelete && (
-          <div className="delete-map-btn" onClick={handleDelete}>
+          <div className="delete-description-btn" onClick={handleDelete}>
             x
           </div>
         )}
@@ -123,14 +123,14 @@ function EditionElement ({element, saveEditions}) {
   };
 
   return (
-    <div className="map-form-container">
-      <form onSubmit={handleSubmission} className="map-form">
+    <div className="description-form-container">
+      <form onSubmit={handleSubmission} className="description-form">
         {inputFields.map((field) => (
-          <label className="map-form-label" key={Math.random()}>
-            <span className="map-label-text">{ field.title }</span>
+          <label className="description-form-label" key={Math.random()}>
+            <span className="description-label-text">{ field.title }</span>
             <input className={classNames({
-              'map-form-input': true,
-              'map-form-type-input': (field.name === 'type')
+              'description-form-input': true,
+              'description-form-type-input': (field.name === 'type')
               })}
               spellCheck={false}
               autoFocus={field.autoFocus}
@@ -144,70 +144,3 @@ function EditionElement ({element, saveEditions}) {
   )
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// function MapElement ({addOrEdit, elementName, elementInfo, depth, path=null}) {
-  // elementInfo.relativePath = (path)
-  //   ? [...path, elementName]
-  //   : [elementName];
-//   const shouldDrawSubmaps = (elementInfo.type !== 'property');
-//   const subMaps = (shouldDrawSubmaps)
-//     ? Object.entries(elementInfo.mapping)
-//     : null;
-  
-//   return (
-//     <div className="map-elements-container">
-//       <div className="map-element"
-//         style={{'marginLeft': (20*depth + 'px')}}
-//         onClick={() => addOrEdit(elementInfo, elementName)}>
-//           {(elementInfo.type === 'add')
-//             ? '+'
-//             : elementName
-//           }
-//       </div>
-
-//       {(shouldDrawSubmaps)
-//         ? <DrawSubmaps
-//           addOrEdit={addOrEdit}
-//           subMaps={subMaps}
-//           depth={depth}
-//           path={elementInfo.relativePath} 
-//         />
-//         : null
-//       }
-//     </div>
-//   )
-// }
-
-// function DrawSubmaps ({addOrEdit, subMaps, depth, path}) {
-//   return(
-//     subMaps.map(([name, values], index) => (
-//         <MapElement
-//         key={`${index}${depth}`}
-//         addOrEdit={addOrEdit}
-//         elementName={name}
-//         elementInfo={values}
-//         depth={depth+1}
-//         path={path}
-//       />
-//     ))
-//     .sort((a) => sortAddBtnAsLast(a.props.elementInfo))
-//   )
-// }
