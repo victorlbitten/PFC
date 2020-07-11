@@ -1,9 +1,9 @@
 import React from 'react';
 import RedirectBtn from './RedirectBtn';
 import DetailsHeader from './DetailsHeader';
-import Maps from './Maps';
+import Descriptions from './Descriptions';
 import SaveButton from './SaveButton';
-import { getMapsByApiId } from '../factories/Apis.factory';
+import { getDescriptionByApiId } from '../factories/Apis.factory';
 import '../styles/components/ApiDetails.css';
 
 export default class ApiDetail extends React.Component {
@@ -13,7 +13,7 @@ export default class ApiDetail extends React.Component {
 
     this.state = {
       api: props.location.state,
-      mapping: {},
+      description: {},
       ongoingRequest: true,
       errorOnRequest: false,
       newApi: (props.location.state.id==="create") 
@@ -23,11 +23,11 @@ export default class ApiDetail extends React.Component {
 
   async componentDidMount() {
     try {
-      const queriedMap = (this.state.newApi)
+      const queriedDescription = (this.state.newApi)
         ? {}
-        : await getMapsByApiId(this.state.api.id);
+        : await getDescriptionByApiId(this.state.api.id);
       this.setState({
-        mapping: queriedMap,
+        description: queriedDescription,
         ongoingRequest: false
       });
     } catch (error) {
@@ -46,7 +46,7 @@ export default class ApiDetail extends React.Component {
   }
 
   render() {
-    const {api, mapping, ongoingRequest, errorOnRequest} = this.state;
+    const {api, description, ongoingRequest, errorOnRequest} = this.state;
     if (errorOnRequest) {
       return <div>Error loading API details. Please, refresh page.</div>
     }
@@ -59,7 +59,7 @@ export default class ApiDetail extends React.Component {
         </div>
         <DetailsContainer
           api={api}
-          mapping={mapping}
+          description={description}
           show={!ongoingRequest}
           formEventsHandler={this.formEventsHandler}
           newApi={this.state.newApi}
@@ -69,15 +69,15 @@ export default class ApiDetail extends React.Component {
   }
 }
 
-function DetailsContainer ({api, mapping, show, formEventsHandler, newApi}) {
+function DetailsContainer ({api, description, show, formEventsHandler, newApi}) {
   const LoadingMessage = () => (<div>Loading API details...</div>);
 
-  const ShownComponents = ({api, mapping, formEventsHandler}) => {
+  const ShownComponents = ({api, description, formEventsHandler}) => {
     return (
       <div>
         <DetailsHeader api={api} handler={formEventsHandler}/>
-        <Maps maps={mapping} />
-        <SaveButton api={api} mapping={mapping} newApi={newApi}/>
+        <Descriptions description={description} />
+        <SaveButton api={api} description={description} newApi={newApi}/>
       </div>
     )
   };
@@ -88,7 +88,7 @@ function DetailsContainer ({api, mapping, show, formEventsHandler, newApi}) {
         (show)
           ? <ShownComponents
             api={api}
-            mapping={mapping}
+            description={description}
             formEventsHandler={formEventsHandler}
           />
           : <LoadingMessage />

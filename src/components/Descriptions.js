@@ -1,64 +1,64 @@
 import React from 'react';
-import MapElement from './MapElement';
-import '../styles/components/Maps.css';
+import DescriptionElement from './DescriptionElement';
+import '../styles/components/Descriptions.css';
 
 export default class Maps extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      maps: this.props.maps
+      description: this.props.description
     }
 
     this.handleChanges = this.handleChanges.bind(this);
-    this.deleteMap = this.deleteMap.bind(this);
+    this.deleteDescriptionElement = this.deleteDescriptionElement.bind(this);
   }
 
   handleChanges(element, elementCurrentName) {
     this.setState((state) => {
       const elementParent = getTargetElementParent(state, element);
       promoteElementChanges(element, elementCurrentName, elementParent);
-      return {maps: state.maps};
+      return {description: state.description};
     })
   }
 
   componentWillMount () {
     this.setState((state) => {
-      appendAddButonToContainers(state.maps);
-      return {maps: state.maps}
+      appendAddButonToContainers(state.description);
+      return {description: state.description}
     })
   }
 
-  deleteMap({name, element}) {
+  deleteDescriptionElement({name, element}) {
     const parentElement = getTargetElementParent(this.state, element);
     this.setState((state) => {
       delete parentElement[name];
-      return {maps: state.maps}
+      return {description: state.description}
     })
   }
 
   render() {
     return (
       <div>
-        <DrawMaps
-          mapping={this.state.maps}
-          addOrEdit={this.handleChanges}  
-          deleteMap={this.deleteMap}
-        />
-      </div>
+      <DrawDescription
+        description={this.state.description}
+        addOrEdit={this.handleChanges}  
+        deleteDescriptionElement={this.deleteDescriptionElement}
+      />
+    </div>
     )
   }
 }
 
-function DrawMaps ({mapping, addOrEdit, deleteMap}) {
-  const drawMapElements = (element, depth=0, path=null) => {
+function DrawDescription ({description, addOrEdit, deleteDescriptionElement}) {
+  const drawDescriptionElements = (element, depth=0, path=null) => {
     const elementsToDraw = Object.entries(element);
-    return elementsToDraw.map((element, index) => {
+    return elementsToDraw.map((element) => {
       const getElementProperties = (element, depth) => {
         // Definição de constantes e métodos
         const elementType = element[1].type;
         const containerizedTypes = ['object', 'object_array'];
         const isContainerizedElement = containerizedTypes.includes(elementType);
-        const elementKey = `${index}${depth}${Math.random()}`;
+        const elementKey = `${depth}${Math.random()}`;
 
         return [isContainerizedElement, elementKey];
       }
@@ -74,24 +74,24 @@ function DrawMaps ({mapping, addOrEdit, deleteMap}) {
       const containerizedElement = (elementKey, element) => {
         return (
           <div className="containerized-type" key={elementKey}>
-            <MapElement
+            <DescriptionElement
               element={element}
               depth={depth}
               saveChanges={addOrEdit}
-              deleteMap={deleteMap}
+              deleteDescriptionElement={deleteDescriptionElement}
             />
-            {drawMapElements(element[1].mapping, depth + 1, element[1].relativePath)}
+            {drawDescriptionElements(element[1].description, depth + 1, element[1].relativePath)}
           </div>
         )
       }
 
       const nonContainerizedElement = (elementKey, element) => {
         return (
-          <MapElement key={elementKey} 
+          <DescriptionElement key={elementKey} 
             element={element}
             depth={depth}
             saveChanges={addOrEdit}
-            deleteMap={deleteMap}
+            deleteDescriptionElement={deleteDescriptionElement}
           />
         )
       }
@@ -104,14 +104,7 @@ function DrawMaps ({mapping, addOrEdit, deleteMap}) {
         : nonContainerizedElement(elementKey, element);
     })
   }
-  return drawMapElements(mapping);
-}
-
-function sortAddBtnAsLast (first) {
-  return (first.type !== 'add')
-    ? -1
-    : 0
-
+  return drawDescriptionElements(description);
 }
 
 const getTargetElementParent = (state, element) => {
@@ -120,7 +113,7 @@ const getTargetElementParent = (state, element) => {
     const nextPathIndex = currentIndex + 1;
     return element.relativePath[nextPathIndex];
   }
-  const getNextAccessor = (currentAccessor, currentPath) => (currentAccessor[currentPath].mapping);
+  const getNextAccessor = (currentAccessor, currentPath) => (currentAccessor[currentPath].description);
   const getNextCount = (count) => (count - 1);
   
   const iterateTillElementParent = (accessor, path, count) => {
@@ -138,7 +131,7 @@ const getTargetElementParent = (state, element) => {
   const elementRelativePath = element.relativePath;
   const numberOfIterations = (elementRelativePath.length - 1);
   const relativePathFirstStep = elementRelativePath[0];
-  return iterateTillElementParent(state.maps, relativePathFirstStep, numberOfIterations);
+  return iterateTillElementParent(state.description, relativePathFirstStep, numberOfIterations);
 }
 
 const promoteElementChanges = (element, elementCurrentName, elementParent) => {
@@ -158,13 +151,13 @@ const promoteElementChanges = (element, elementCurrentName, elementParent) => {
   }
 
   if(['object', 'object_array'].includes(element.type)) {
-    if(!Object.keys(element.mapping).length) {
+    if(!Object.keys(element.description).length) {
       appendNewElement(element, false);
     }
   }
 }
 
-const appendAddButonToContainers = (maps) => {
+const appendAddButonToContainers = (description) => {
   const typesToAppend = ['object', 'object_array'];
 
   const appendingIteration = (element) => {
@@ -174,7 +167,7 @@ const appendAddButonToContainers = (maps) => {
     const getNextElement = () => {
       return (isRoot)
         ? element
-        : element.mapping
+        : element.description
     }
 
     if (shouldAppend) {
@@ -184,16 +177,16 @@ const appendAddButonToContainers = (maps) => {
     }
   }
 
-  appendingIteration(maps);
+  appendingIteration(description);
 }
 
 const appendNewElement = (
   parentElement,
   isRoot=false,
   newElement={
-    type:'add', mapping:{}}
+    type:'add', description:{}}
   ) => {
     (isRoot)
       ? (parentElement.add = newElement)
-      : (parentElement.mapping.add = newElement)
+      : (parentElement.description.add = newElement)
   }

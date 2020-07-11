@@ -1,4 +1,4 @@
-.map-element {
+.description-element {
   padding: 8px 15px;
   margin: 5px 0;
   background-color: #fafafa;
@@ -11,12 +11,12 @@
   position: relative;
 }
 
-.map-element:hover {
+.description-element:hover {
   background-color: #f0f0f0;
   cursor: pointer;
 }
 
-.delete-map-btn {
+.delete-description-btn {
   position: absolute;
   z-index: 2;
   top: -5px;
@@ -34,13 +34,13 @@
   transition: all 0.1s ease-out;
 }
 
-.delete-map-btn:hover {
+.delete-description-btn:hover {
   height: 16px;
   width: 16px;
   font-size: 13px;
 }
 
-.map-form-container {
+.description-form-container {
   padding: 10px;
   margin: 10px 0;
   background-color: #fafafa;
@@ -50,14 +50,14 @@
   box-shadow: 1px 1px 5px 0px #ccc;
 }
 
-.map-form {
+.description-form {
   display: flex;
   flex-direction: column;
   align-items: stretch;
   justify-content: space-between;
 }
 
-.map-form-label {
+.description-form-label {
   background-color: var(--brand-color);
   border: 1px solid var(--brand-color);
   border-radius: 4px;
@@ -67,18 +67,18 @@
   width: 150px;
 }
 
-.map-form-label:first-child {
+.description-form-label:first-child {
   margin-bottom: 10px;
 }
 
-.map-label-text {
+.description-label-text {
   padding: 0 7px;
   font-variant-caps: all-petite-caps;
   font-weight: 600;
   width: 65px;
 }
 
-.map-form-input {
+.description-form-input {
   border: none;
   outline: none;
   border-radius: 4px;
@@ -88,7 +88,7 @@
   text-align: center;
 }
 
-.map-form-type-input {
+.description-form-type-input {
   font-variant-caps: all-petite-caps;
   font-size: 15px;
   font-weight: 500;
