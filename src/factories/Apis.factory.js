@@ -25,6 +25,20 @@ async function getDescriptionByApiId (apiId) {
   }
 }
 
+async function getApiDescriptionById (apiId) {
+  const url = `${urlBackend}/apis/${apiId}/description`;
+  const extractParsedObjectFromReturn = (requestResult) => (
+    JSON.parse(requestResult.data[0].description)
+  );
+
+  try {
+    const requestResult = await axios.get(url);
+    return extractParsedObjectFromReturn(requestResult);
+  } catch (error) {
+    throw new Error(`Couldn't load mapping for api with ID ${apiId}`);
+  }
+}
+
 async function saveApi (api, description) {
   const url = `${urlBackend}/apis/${api.id}`;
   const requestConfigs = {
@@ -75,6 +89,7 @@ async function deleteApi (apiId) {
 export {
   getApis,
   getDescriptionByApiId,
+  getApiDescriptionById,
   saveApi,
   createApi,
   deleteApi

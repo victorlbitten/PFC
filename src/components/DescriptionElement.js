@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import classNames from 'classnames';
 import '../styles/components/DescriptionElement.css';
 
-export default class MapElement extends React.Component {
+export default class DescriptionElement extends React.Component {
   constructor(props) {
     super(props);
     this.state = {

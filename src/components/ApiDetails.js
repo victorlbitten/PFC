@@ -3,7 +3,7 @@ import RedirectBtn from './RedirectBtn';
 import DetailsHeader from './DetailsHeader';
 import Descriptions from './Descriptions';
 import SaveButton from './SaveButton';
-import { getDescriptionByApiId } from '../factories/Apis.factory';
+import { getDescriptionByApiId, getApiDescriptionById } from '../factories/Apis.factory';
 import '../styles/components/ApiDetails.css';
 
 export default class ApiDetail extends React.Component {
@@ -13,7 +13,8 @@ export default class ApiDetail extends React.Component {
 
     this.state = {
       api: props.location.state,
-      description: {},
+      appDescription: {},
+      apiDescription: {},
       ongoingRequest: true,
       errorOnRequest: false,
       newApi: (props.location.state.id==="create") 
@@ -22,20 +23,8 @@ export default class ApiDetail extends React.Component {
   }
 
   async componentDidMount() {
-    try {
-      const queriedDescription = (this.state.newApi)
-        ? {}
-        : await getDescriptionByApiId(this.state.api.id);
-      this.setState({
-        description: queriedDescription,
-        ongoingRequest: false
-      });
-    } catch (error) {
-      this.setState({
-        ongoingRequest: false,
-        errorOnRequest: true
-      })
-    }
+    await getAppDescription(this);
+    await getApiDescription(this);
   }
 
   formEventsHandler(value, field) {
@@ -46,7 +35,7 @@ export default class ApiDetail extends React.Component {
   }
 
   render() {
-    const {api, description, ongoingRequest, errorOnRequest} = this.state;
+    const {api, appDescription, apiDescription, ongoingRequest, errorOnRequest} = this.state;
     if (errorOnRequest) {
       return <div>Error loading API details. Please, refresh page.</div>
     }
@@ -59,7 +48,8 @@ export default class ApiDetail extends React.Component {
         </div>
         <DetailsContainer
           api={api}
-          description={description}
+          appDescription={appDescription}
+          apiDescription={apiDescription}
           show={!ongoingRequest}
           formEventsHandler={this.formEventsHandler}
           newApi={this.state.newApi}
@@ -69,15 +59,18 @@ export default class ApiDetail extends React.Component {
   }
 }
 
-function DetailsContainer ({api, description, show, formEventsHandler, newApi}) {
+function DetailsContainer ({api, appDescription, apiDescription, show, formEventsHandler, newApi}) {
   const LoadingMessage = () => (<div>Loading API details...</div>);
 
-  const ShownComponents = ({api, description, formEventsHandler}) => {
+  const ShownComponents = ({api, appDescription, apiDescription, formEventsHandler}) => {
     return (
       <div>
         <DetailsHeader api={api} handler={formEventsHandler}/>
-        <Descriptions description={description} />
-        <SaveButton api={api} description={description} newApi={newApi}/>
+        <div style={{display: 'flex', justifyContent: 'space-between'}}>
+          <Descriptions description={appDescription} />
+          <Descriptions description={apiDescription} />
+        </div>
+        <SaveButton api={api} description={appDescription} newApi={newApi}/>
       </div>
     )
   };
@@ -88,11 +81,47 @@ function DetailsContainer ({api, description, show, formEventsHandler, newApi}) 
         (show)
           ? <ShownComponents
             api={api}
-            description={description}
+            appDescription={appDescription}
+            apiDescription={apiDescription}
             formEventsHandler={formEventsHandler}
           />
           : <LoadingMessage />
       }
     </div>
   )
+}
+
+const getAppDescription = async (classReference) => {
+  try {
+    const queriedDescription = (classReference.state.newApi)
+      ? {}
+      : await getDescriptionByApiId(classReference.state.api.id);
+    classReference.setState({
+      appDescription: queriedDescription,
+      ongoingRequest: false
+    });
+  } catch (error) {
+    classReference.setState({
+      ongoingRequest: false,
+      errorOnRequest: true
+    })
+  }
+}
+
+const getApiDescription = async (classReference) => {
+  try {
+    const queriedDescription = (classReference.state.newApi)
+      ? {}
+      : await getApiDescriptionById(classReference.state.api.id);
+      console.log(queriedDescription);
+    classReference.setState({
+      apiDescription: queriedDescription,
+      ongoingRequest: false
+    });
+  } catch (error) {
+    classReference.setState({
+      ongoingRequest: false,
+      errorOnRequest: true
+    })
+  }
 }
