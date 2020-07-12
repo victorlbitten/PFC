@@ -39,7 +39,7 @@ async function getApiDescriptionById (apiId) {
   }
 }
 
-async function saveApi (api, description) {
+async function saveApi (api, appDescription, apiDescription) {
   const url = `${urlBackend}/apis/${api.id}`;
   const requestConfigs = {
     method: 'put',
@@ -50,7 +50,8 @@ async function saveApi (api, description) {
         url: api.url,
         method: api.method
       },
-      description: description
+      appDescription: appDescription,
+      apiDescription: apiDescription
     }
   };
   try {
@@ -61,14 +62,15 @@ async function saveApi (api, description) {
   }
 }
 
-async function createApi (api, description) {
+async function createApi (api, appDescription, apiDescription) {
   const url = `${urlBackend}/apis`;
   const requestConfigs = {
     method: 'post',
     url: url,
     data: {
       api: api,
-      description: description
+      appDescription: appDescription,
+      apiDescription: apiDescription
     }
   }
 

@@ -70,7 +70,7 @@ function DetailsContainer ({api, appDescription, apiDescription, show, formEvent
           <Descriptions description={appDescription} />
           <Descriptions description={apiDescription} />
         </div>
-        <SaveButton api={api} description={appDescription} newApi={newApi}/>
+        <SaveButton api={api} appDescription={appDescription} apiDescription={apiDescription} newApi={newApi}/>
       </div>
     )
   };
