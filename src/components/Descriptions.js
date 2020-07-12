@@ -2,7 +2,7 @@ import React from 'react';
 import DescriptionElement from './DescriptionElement';
 import '../styles/components/Descriptions.css';
 
-export default class Maps extends React.Component {
+export default class Descriptions extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -38,7 +38,7 @@ export default class Maps extends React.Component {
 
   render() {
     return (
-      <div>
+      <div style={{flexGrow: 1}}>
       <DrawDescription
         description={this.state.description}
         addOrEdit={this.handleChanges}  
