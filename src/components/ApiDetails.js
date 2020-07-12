@@ -10,6 +10,8 @@ export default class ApiDetail extends React.Component {
   constructor(props) {
     super(props);
     this.formEventsHandler = this.formEventsHandler.bind(this);
+    this.onTargetSelection = this.onTargetSelection.bind(this);
+    this.onOriginSelection = this.onOriginSelection.bind(this);
 
     this.state = {
       api: props.location.state,
@@ -17,7 +19,14 @@ export default class ApiDetail extends React.Component {
       apiDescription: {},
       ongoingRequest: true,
       errorOnRequest: false,
-      newApi: (props.location.state.id==="create") 
+      newApi: (props.location.state.id==="create"),
+      mappingEnvironment: {
+        active: false,
+        originElement: {},
+        onOriginSelection: this.onOriginSelection,
+        targetElement: {},
+        onTargetSelection: this.onTargetSelection
+      }
     };
 
   }
@@ -25,6 +34,20 @@ export default class ApiDetail extends React.Component {
   async componentDidMount() {
     await getAppDescription(this);
     await getApiDescription(this);
+  }
+
+  onOriginSelection({element}) {
+    this.setState((state) => {
+      state.mappingEnvironment.active = true;
+      state.mappingEnvironment.originElement = element;
+      return {mappingEnvironment: state.mappingEnvironment}
+    })
+  }
+
+  onTargetSelection({element}) {
+    const originElement = this.state.mappingEnvironment.originElement;
+    console.log(originElement);
+    originElement.mapping = element.relativePath;
   }
 
   formEventsHandler(value, field) {
@@ -35,7 +58,15 @@ export default class ApiDetail extends React.Component {
   }
 
   render() {
-    const {api, appDescription, apiDescription, ongoingRequest, errorOnRequest} = this.state;
+    const {
+      api,
+      newApi,
+      appDescription,
+      apiDescription,
+      ongoingRequest,
+      errorOnRequest,
+      mappingEnvironment
+    } = this.state;
     if (errorOnRequest) {
       return <div>Error loading API details. Please, refresh page.</div>
     }
@@ -52,14 +83,15 @@ export default class ApiDetail extends React.Component {
           apiDescription={apiDescription}
           show={!ongoingRequest}
           formEventsHandler={this.formEventsHandler}
-          newApi={this.state.newApi}
+          newApi={newApi}
+          mappingEnvironment={mappingEnvironment}
         />
       </div>
     )
   }
 }
 
-function DetailsContainer ({api, appDescription, apiDescription, show, formEventsHandler, newApi}) {
+function DetailsContainer ({api, appDescription, apiDescription, show, formEventsHandler, newApi, mappingEnvironment}) {
   const LoadingMessage = () => (<div>Loading API details...</div>);
 
   const ShownComponents = ({api, appDescription, apiDescription, formEventsHandler}) => {
@@ -67,8 +99,8 @@ function DetailsContainer ({api, appDescription, apiDescription, show, formEvent
       <div>
         <DetailsHeader api={api} handler={formEventsHandler}/>
         <div style={{display: 'flex', justifyContent: 'space-between'}}>
-          <Descriptions description={appDescription} />
-          <Descriptions description={apiDescription} />
+          <Descriptions description={appDescription} mappingEnvironment={mappingEnvironment} isOrigin={true}/>
+          <Descriptions description={apiDescription} mappingEnvironment={mappingEnvironment} isTarget={true}/>
         </div>
         <SaveButton api={api} appDescription={appDescription} apiDescription={apiDescription} newApi={newApi}/>
       </div>
@@ -113,7 +145,6 @@ const getApiDescription = async (classReference) => {
     const queriedDescription = (classReference.state.newApi)
       ? {}
       : await getApiDescriptionById(classReference.state.api.id);
-      console.log(queriedDescription);
     classReference.setState({
       apiDescription: queriedDescription,
       ongoingRequest: false
