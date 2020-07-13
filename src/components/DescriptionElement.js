@@ -36,6 +36,7 @@ export default class DescriptionElement extends React.Component {
   }
 
   saveEditions(elementToSave) {
+    this.props.mappingEnvironment.active = false;
     const isNestable = ['object', 'object_array'].includes(elementToSave.element.type);
     const addEmptyDescription = (
       elementToSave.isNewElement || (

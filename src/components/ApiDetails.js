@@ -46,7 +46,6 @@ export default class ApiDetail extends React.Component {
 
   onTargetSelection({element}) {
     const originElement = this.state.mappingEnvironment.originElement;
-    console.log(originElement);
     originElement.mapping = element.relativePath;
   }
 
