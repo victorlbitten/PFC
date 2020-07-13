@@ -13,16 +13,30 @@ export default class DescriptionElement extends React.Component {
       isEditing: false
     }
 
-    this.toggleEditMode = this.toggleEditMode.bind(this);
+    this.handleElementClick = this.handleElementClick.bind(this);
     this.saveEditions = this.saveEditions.bind(this);
     this.handleDelete = this.handleDelete.bind(this);
+    this.show = this.show.bind(this);
   }
 
-  toggleEditMode() {
+  show() {
+    console.log(this.state.element);
+  }
+
+
+  handleElementClick() {
+    const { mappingEnvironment, isTarget } = this.props;
+    if (isTarget && mappingEnvironment.active) {
+      return mappingEnvironment.onTargetSelection(this.state.element);
+    } else if (!isTarget) {
+      mappingEnvironment.active=true;
+      mappingEnvironment.originElement = this.state.element.element;
+    }
     this.setState((previousState) => ({isEditing: !previousState.isEditing}));
   }
 
   saveEditions(elementToSave) {
+    this.props.mappingEnvironment.active = false;
     const isNestable = ['object', 'object_array'].includes(elementToSave.element.type);
     const addEmptyDescription = (
       elementToSave.isNewElement || (
@@ -52,6 +66,7 @@ export default class DescriptionElement extends React.Component {
   render() {
     const { depth } = this.props;
     const { element, isEditing } = this.state;
+    const showButton = false;
 
     return (
       <div style={getElementStyles(depth)}>
@@ -62,10 +77,11 @@ export default class DescriptionElement extends React.Component {
               />
           : <DescriptiveElement
               element={this.state.element}
-              toggleEdit={this.toggleEditMode}
+              toggleEdit={this.handleElementClick}
               handleDelete={this.handleDelete}  
             />
         }
+        {showButton && <button onClick={this.show}>show</button>}
       </div>
     )
   }

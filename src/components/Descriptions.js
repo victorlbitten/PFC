@@ -37,19 +37,30 @@ export default class Descriptions extends React.Component {
   }
 
   render() {
+    const {mappingEnvironment, isOrigin, isTarget} = this.props;
     return (
       <div style={{flexGrow: 1}}>
       <DrawDescription
         description={this.state.description}
         addOrEdit={this.handleChanges}  
         deleteDescriptionElement={this.deleteDescriptionElement}
+        mappingEnvironment={mappingEnvironment}
+        isOrigin={isOrigin}
+        isTarget={isTarget}
       />
     </div>
     )
   }
 }
 
-function DrawDescription ({description, addOrEdit, deleteDescriptionElement}) {
+function DrawDescription ({
+  description,
+  addOrEdit,
+  deleteDescriptionElement,
+  mappingEnvironment,
+  isOrigin,
+  isTarget
+}) {
   const drawDescriptionElements = (element, depth=0, path=null) => {
     const elementsToDraw = Object.entries(element);
     return elementsToDraw.map((element) => {
@@ -79,6 +90,9 @@ function DrawDescription ({description, addOrEdit, deleteDescriptionElement}) {
               depth={depth}
               saveChanges={addOrEdit}
               deleteDescriptionElement={deleteDescriptionElement}
+              mappingEnvironment={mappingEnvironment}
+              isOrigin={isOrigin}
+              isTarget={isTarget}
             />
             {drawDescriptionElements(element[1].description, depth + 1, element[1].relativePath)}
           </div>
@@ -92,6 +106,9 @@ function DrawDescription ({description, addOrEdit, deleteDescriptionElement}) {
             depth={depth}
             saveChanges={addOrEdit}
             deleteDescriptionElement={deleteDescriptionElement}
+            mappingEnvironment={mappingEnvironment}
+            isOrigin={isOrigin}
+            isTarget={isTarget}
           />
         )
       }
