@@ -5,3 +5,10 @@
 .containerized-type {
   margin-bottom: 10px;
 }
+
+.description-title {
+  font-size: 25px;
+  font-variant-caps: all-petite-caps;
+  color: var(--brand-dark-color);
+  border-bottom: 1px solid var(--brand-dark-color);
+}

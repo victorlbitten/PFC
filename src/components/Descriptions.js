@@ -38,16 +38,21 @@ export default class Descriptions extends React.Component {
 
   render() {
     const {mappingEnvironment, isOrigin, isTarget} = this.props;
+    const title = (isTarget)
+      ? 'API description'
+      : 'App description';
+
     return (
       <div style={{flexGrow: 1}}>
-      <DrawDescription
-        description={this.state.description}
-        addOrEdit={this.handleChanges}  
-        deleteDescriptionElement={this.deleteDescriptionElement}
-        mappingEnvironment={mappingEnvironment}
-        isOrigin={isOrigin}
-        isTarget={isTarget}
-      />
+        <span className="description-title">{title}</span>
+        <DrawDescription
+          description={this.state.description}
+          addOrEdit={this.handleChanges}  
+          deleteDescriptionElement={this.deleteDescriptionElement}
+          mappingEnvironment={mappingEnvironment}
+          isOrigin={isOrigin}
+          isTarget={isTarget}
+        />
     </div>
     )
   }
