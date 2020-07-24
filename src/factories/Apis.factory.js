@@ -45,11 +45,7 @@ async function saveApi (api, appDescription, apiDescription) {
     method: 'put',
     url: url,
     data: {
-      api: {
-        name: api.name,
-        url: api.url,
-        method: api.method
-      },
+      api,
       appDescription: appDescription,
       apiDescription: apiDescription
     }
