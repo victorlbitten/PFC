@@ -12,6 +12,7 @@ export default function SaveButton ({api, appDescription, apiDescription, newApi
   }
 
   function saveEditions () {
+    console.log([api, appDescription, apiDescription]);
     try {
       saveApi(api, appDescription, apiDescription);
     } catch (error) {

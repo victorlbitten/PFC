@@ -6,11 +6,13 @@ export default class Descriptions extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      description: this.props.description
+      description: this.props.description.description,
+      is_json: this.props.description.is_json
     }
 
     this.handleChanges = this.handleChanges.bind(this);
     this.deleteDescriptionElement = this.deleteDescriptionElement.bind(this);
+    this.switchJsonXmlOnClick = this.switchJsonXmlOnClick.bind(this);
   }
 
   handleChanges(element, elementCurrentName) {
@@ -18,6 +20,14 @@ export default class Descriptions extends React.Component {
       const elementParent = getTargetElementParent(state, element);
       promoteElementChanges(element, elementCurrentName, elementParent);
       return {description: state.description};
+    })
+  }
+
+  switchJsonXmlOnClick() {
+    this.props.description.is_json = !this.props.description.is_json;
+    this.setState((state) => {
+      state.is_json = !state.is_json;
+      return {is_json: state.is_json}
     })
   }
 
@@ -45,6 +55,7 @@ export default class Descriptions extends React.Component {
     return (
       <div style={{flexGrow: 1}}>
         <span className="description-title">{title}</span>
+        <JsonXmlBtn is_json={this.props.description.is_json} handleClick={this.switchJsonXmlOnClick}/>
         <DrawDescription
           description={this.state.description}
           addOrEdit={this.handleChanges}  
@@ -56,6 +67,19 @@ export default class Descriptions extends React.Component {
     </div>
     )
   }
+}
+
+function JsonXmlBtn ({is_json, handleClick}) {
+  return (
+    <span className="json-xml-btn"
+      onClick={handleClick}>
+      {
+        (is_json)
+          ? 'JSON'
+          : 'XML'
+      }
+    </span>
+  )
 }
 
 function DrawDescription ({

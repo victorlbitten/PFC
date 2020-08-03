@@ -11,11 +11,15 @@ async function getApis () {
   }
 }
 
+const extractParsedObjectFromReturn = (requestResult) => (
+  {
+    is_json: requestResult.data[0].is_json,
+    description: JSON.parse(requestResult.data[0].description)
+  }
+);
+
 async function getDescriptionByApiId (apiId) {
   const url = `${urlBackend}/apis/${apiId}/app-description`;
-  const extractParsedObjectFromReturn = (requestResult) => (
-    JSON.parse(requestResult.data[0].description)
-  );
 
   try {
     const requestResult = await axios.get(url);
@@ -27,9 +31,6 @@ async function getDescriptionByApiId (apiId) {
 
 async function getApiDescriptionById (apiId) {
   const url = `${urlBackend}/apis/${apiId}/description`;
-  const extractParsedObjectFromReturn = (requestResult) => (
-    JSON.parse(requestResult.data[0].description)
-  );
 
   try {
     const requestResult = await axios.get(url);
@@ -59,6 +60,7 @@ async function saveApi (api, appDescription, apiDescription) {
 }
 
 async function createApi (api, appDescription, apiDescription) {
+  console.log([appDescription, apiDescription]);
   const apiToInsert = {
     name: api.name,
     method: api.method,
