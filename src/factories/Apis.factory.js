@@ -59,12 +59,17 @@ async function saveApi (api, appDescription, apiDescription) {
 }
 
 async function createApi (api, appDescription, apiDescription) {
+  const apiToInsert = {
+    name: api.name,
+    method: api.method,
+    url: api.url
+  };
   const url = `${urlBackend}/apis`;
   const requestConfigs = {
     method: 'post',
     url: url,
     data: {
-      api: api,
+      api: apiToInsert,
       appDescription: appDescription,
       apiDescription: apiDescription
     }
