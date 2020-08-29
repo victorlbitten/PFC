@@ -9,6 +9,7 @@ export default class DetailsHeader extends React.Component {
     };
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleChange = this.handleChange.bind(this);
+    this.handleCheckboxChange = this.handleCheckboxChange.bind(this);
   }
 
   handleSubmit = (event) => {
@@ -24,6 +25,14 @@ export default class DetailsHeader extends React.Component {
     this.setState((state) => {
       state.api[field] = event.target.value;
       return ({api: state.api})
+    })
+  }
+
+  handleCheckboxChange = (event) => {
+    const isOpc = event.target.checked;
+    this.setState((state) => {
+      state.api.isOpc = isOpc;
+      return ({api: state.api});
     })
   }
 
@@ -57,6 +66,9 @@ export default class DetailsHeader extends React.Component {
             />
           </label>
         )}
+        <label>OPC
+          <input name="opc" type="checkbox" checked={api.isOpc} onChange={this.handleCheckboxChange}/>
+        </label>
         <button type="submit" style={{'display': 'none'}} />
       </form>  
     )

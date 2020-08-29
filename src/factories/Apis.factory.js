@@ -60,11 +60,11 @@ async function saveApi (api, appDescription, apiDescription) {
 }
 
 async function createApi (api, appDescription, apiDescription) {
-  console.log([appDescription, apiDescription]);
   const apiToInsert = {
     name: api.name,
     method: api.method,
-    url: api.url
+    url: api.url,
+    isOpc: api.isOpc
   };
   const url = `${urlBackend}/apis`;
   const requestConfigs = {
