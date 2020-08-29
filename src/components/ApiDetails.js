@@ -15,8 +15,14 @@ export default class ApiDetail extends React.Component {
 
     this.state = {
       api: props.location.state,
-      appDescription: {},
-      apiDescription: {},
+      appDescription: {
+        description: {},
+        is_json: true
+      },
+      apiDescription: {
+        description: {},
+        is_json: true
+      },
       ongoingRequest: true,
       errorOnRequest: false,
       newApi: (props.location.state.id==="create"),
@@ -32,8 +38,11 @@ export default class ApiDetail extends React.Component {
   }
 
   async componentDidMount() {
-    await getAppDescription(this);
-    await getApiDescription(this);
+    if (!this.state.newApi) {
+      await getAppDescription(this);
+      await getApiDescription(this);
+    }
+    this.setState({ongoingRequest: false});
   }
 
   onOriginSelection({element}) {
@@ -129,11 +138,9 @@ const getAppDescription = async (classReference) => {
       : await getDescriptionByApiId(classReference.state.api.id);
     classReference.setState({
       appDescription: queriedDescription,
-      ongoingRequest: false
     });
   } catch (error) {
     classReference.setState({
-      ongoingRequest: false,
       errorOnRequest: true
     })
   }
@@ -146,11 +153,9 @@ const getApiDescription = async (classReference) => {
       : await getApiDescriptionById(classReference.state.api.id);
     classReference.setState({
       apiDescription: queriedDescription,
-      ongoingRequest: false
     });
   } catch (error) {
     classReference.setState({
-      ongoingRequest: false,
       errorOnRequest: true
     })
   }
