@@ -12,7 +12,6 @@ export default function SaveButton ({api, appDescription, apiDescription, newApi
   }
 
   function saveEditions () {
-    console.log([api, appDescription, apiDescription]);
     try {
       saveApi(api, appDescription, apiDescription);
     } catch (error) {
@@ -21,6 +20,7 @@ export default function SaveButton ({api, appDescription, apiDescription, newApi
   }
 
   const handleSave = () => {
+    deleteAddEntries();
     if (newApi) {
       createNewApi();
     } else {
@@ -37,4 +37,25 @@ export default function SaveButton ({api, appDescription, apiDescription, newApi
       </button>
     </div>
   )
+
+    function deleteAddEntries () {
+      const keyToDelete = 'add';
+      const expansibleTypes = ['object', 'object_array'];
+      const deletionIteration = (referenceObject) => {
+        Object.keys(referenceObject).forEach((currentKey) => {
+          if (currentKey === keyToDelete) {
+            delete referenceObject[currentKey];
+            return;
+          }
+
+          if (expansibleTypes.includes(referenceObject[currentKey].type)) {
+            deletionIteration(referenceObject[currentKey].description);
+          }
+        })
+      }
+
+      deletionIteration(apiDescription.description);
+      deletionIteration(appDescription.description);
+    }
+
 }
