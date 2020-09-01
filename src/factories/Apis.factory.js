@@ -64,7 +64,8 @@ async function createApi (api, appDescription, apiDescription) {
     name: api.name,
     method: api.method,
     url: api.url,
-    isOpc: api.isOpc
+    isOpc: api.isOpc,
+    nodeId: api.nodeId
   };
   const url = `${urlBackend}/apis`;
   const requestConfigs = {

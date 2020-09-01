@@ -3,8 +3,8 @@
   --border-light-color: #8a8ad0;
 
   display: flex;
+  flex-wrap: wrap;
   justify-content: space-between;
-  margin-bottom: 20px;
 }
 
 .header-label {
@@ -16,6 +16,7 @@
   background-color: var(--border-color);
   padding: 1px 1px 1px 5px;
   font-variant-caps: all-petite-caps;
+  margin-bottom: 20px;
 }
 
 .header-label:focus-within {

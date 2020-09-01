@@ -41,18 +41,22 @@ export default class DetailsHeader extends React.Component {
     const fields = [
       {name: 'name', title: 'Name'},
       {name: 'method', title: 'Method'},
-      {name: 'url', title: 'URL'}
+      {name: 'url', title: 'URL'},
+      {...(api.isOpc) ? {name: 'nodeId', title: 'Node id'} : {}}
     ];
     const defaultValues = {
       name: (api.name !== '+') ? api.name : '',
       method: api.method || '',
-      url: api.url || ''
+      url: api.url || '',
+      nodeId: api.nodeId || ''
     }
 
     return (
       <form onSubmit={this.handleSubmit}
         className="form-container">
-        {fields.map((field, index) =>
+        {fields
+          .filter((field) => Object.keys(field).length)
+          .map((field, index) =>
           <label key={index}
             className="header-label">
             <span className="header-label-text">{field.title}: </span>
