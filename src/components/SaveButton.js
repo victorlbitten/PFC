@@ -38,24 +38,24 @@ export default function SaveButton ({api, appDescription, apiDescription, newApi
     </div>
   )
 
-    function deleteAddEntries () {
-      const keyToDelete = 'add';
-      const expansibleTypes = ['object', 'object_array'];
-      const deletionIteration = (referenceObject) => {
-        Object.keys(referenceObject).forEach((currentKey) => {
-          if (currentKey === keyToDelete) {
-            delete referenceObject[currentKey];
-            return;
-          }
+  function deleteAddEntries () {
+    const keyToDelete = 'add';
+    const expansibleTypes = ['object', 'object_array'];
+    const deletionIteration = (referenceObject) => {
+      Object.keys(referenceObject).forEach((currentKey) => {
+        if (currentKey === keyToDelete) {
+          delete referenceObject[currentKey];
+          return;
+        }
 
-          if (expansibleTypes.includes(referenceObject[currentKey].type)) {
-            deletionIteration(referenceObject[currentKey].description);
-          }
-        })
-      }
-
-      deletionIteration(apiDescription.description);
-      deletionIteration(appDescription.description);
+        if (expansibleTypes.includes(referenceObject[currentKey].type)) {
+          deletionIteration(referenceObject[currentKey].description);
+        }
+      })
     }
+
+    deletionIteration(apiDescription.description);
+    deletionIteration(appDescription.description);
+  }
 
 }
