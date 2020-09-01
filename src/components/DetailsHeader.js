@@ -9,6 +9,7 @@ export default class DetailsHeader extends React.Component {
     };
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleChange = this.handleChange.bind(this);
+    this.handleCheckboxChange = this.handleCheckboxChange.bind(this);
   }
 
   handleSubmit = (event) => {
@@ -27,23 +28,35 @@ export default class DetailsHeader extends React.Component {
     })
   }
 
+  handleCheckboxChange = (event) => {
+    const isOpc = event.target.checked;
+    this.setState((state) => {
+      state.api.isOpc = isOpc;
+      return ({api: state.api});
+    })
+  }
+
   render() {
     const { api } = this.state;
     const fields = [
       {name: 'name', title: 'Name'},
       {name: 'method', title: 'Method'},
-      {name: 'url', title: 'URL'}
+      {name: 'url', title: 'URL'},
+      {...(api.isOpc) ? {name: 'nodeId', title: 'Node id'} : {}}
     ];
     const defaultValues = {
       name: (api.name !== '+') ? api.name : '',
       method: api.method || '',
-      url: api.url || ''
+      url: api.url || '',
+      nodeId: api.nodeId || ''
     }
 
     return (
       <form onSubmit={this.handleSubmit}
         className="form-container">
-        {fields.map((field, index) =>
+        {fields
+          .filter((field) => Object.keys(field).length)
+          .map((field, index) =>
           <label key={index}
             className="header-label">
             <span className="header-label-text">{field.title}: </span>
@@ -57,6 +70,9 @@ export default class DetailsHeader extends React.Component {
             />
           </label>
         )}
+        <label>OPC
+          <input name="opc" type="checkbox" checked={api.isOpc} onChange={this.handleCheckboxChange}/>
+        </label>
         <button type="submit" style={{'display': 'none'}} />
       </form>  
     )
